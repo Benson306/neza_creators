@@ -9,17 +9,16 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthContext } from '../context/AuthContext'
 
-function Login() {
-  const [email, setEmail] = useState(null);
+function ChangePassword() {
+  const [confirmPassword, setConfirmPassword] = useState(null);
   const [password, setPassword] = useState(null);
+  const navigate  = useNavigate();
 
-  const { addUid, addEmail, addIsVerified, addFirstTime } = useContext(AuthContext)
-
-  const navigate = useNavigate();
+  const { uid } =  useContext(AuthContext);
 
   const handleSubmit = () => {
 
-    if(email == null || password == null){
+    if(confirmPassword == null || password == null){
       toast.error('All Fields Are Required', {
           position: "top-right",
           autoClose: 1000,
@@ -33,13 +32,27 @@ function Login() {
       return
     }
 
-    fetch(`${process.env.REACT_APP_API_URL}/creator_login`,{
+    if(confirmPassword !== password){
+        toast.error('Password must match', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
+        return
+      }
+
+    fetch(`${process.env.REACT_APP_API_URL}/change_creator_password`,{
       method: 'POST',
       headers:{
         "Content-Type":"application/json"
       },
       body:JSON.stringify({
-        email,
+        _id: uid,
         password
       })
     })
@@ -47,7 +60,7 @@ function Login() {
       if(response.ok){
         toast.success('Success', {
           position: "top-right",
-          autoClose: 1000,
+          autoClose: 500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -57,14 +70,7 @@ function Login() {
           });
 
           response.json().then((res)=>{
-            addEmail(res.email);
-            addUid(res._id);
-            addFirstTime(res.firstTimePassword);
-            addIsVerified(res.isVerified);
-
-            if(res.firstTimePassword){
-              navigate('/change_password');
-            }else if(res.isVerified){
+            if(res.isVerified){
               navigate('/app/dashboard');
             }else if(res.status == 3){
               navigate('/kyc');
@@ -74,6 +80,7 @@ function Login() {
               navigate('/failed_verification');
             }
           });
+
       }else{
         toast.error('Check your credentials', {
           position: "top-right",
@@ -122,33 +129,23 @@ function Login() {
           </div>
           <main className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
             <div className="w-full">
-              <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">Login</h1>
+              <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">Create New Password</h1>
               <Label>
-                <span>Email</span>
-                <Input onChange={e =>  setEmail(e.target.value)} className="mt-1" type="email" placeholder="john@doe.com" />
+                <span>Password</span>
+                <Input onChange={e =>  setPassword(e.target.value)} className="mt-1" type="password" placeholder="***************" />
               </Label>
 
               <Label className="mt-4">
-                <span>Password</span>
-                <Input onChange={e =>  setPassword(e.target.value)} className="mt-1" type="password" placeholder="***************" />
+                <span>Confirm Password</span>
+                <Input onChange={e =>  setConfirmPassword(e.target.value)} className="mt-1" type="password" placeholder="***************" />
               </Label>
 
               <Button class="bg-blue-600 p-2 rounded-lg text-sm text-white w-full mt-4 text-center" block
               onClick={() => handleSubmit()}
               >
-                Log in
+                Save Password
               </Button>
 
-              <hr className="my-6" />
-
-              <p >
-                <Link
-                  className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
-                  to="/forgot-password"
-                >
-                  Forgot your password?
-                </Link>
-              </p>
             </div>
           </main>
         </div>
@@ -157,4 +154,4 @@ function Login() {
   )
 }
 
-export default Login
+export default ChangePassword

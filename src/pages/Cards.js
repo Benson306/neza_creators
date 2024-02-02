@@ -49,8 +49,8 @@ function Cards() {
         <InfoCard title="New sales" value="376">
           <RoundIcon
             icon={CartIcon}
-            iconColorClass="text-blue-500 dark:text-blue-100"
-            bgColorClass="bg-blue-100 dark:bg-blue-500"
+            iconColorClass="text-blue-600 dark:text-blue-100"
+            bgColorClass="bg-blue-100 dark:bg-blue-600"
             className="mr-4"
           />
         </InfoCard>
@@ -79,7 +79,7 @@ function Cards() {
           </CardBody>
         </Card>
 
-        <Card colored className="text-white bg-purple-600">
+        <Card colored className="text-white bg-blue-600">
           <CardBody>
             <p className="mb-4 font-semibold">Colored card</p>
             <p>

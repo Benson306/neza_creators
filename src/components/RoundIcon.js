@@ -3,8 +3,8 @@ import classNames from 'classnames'
 
 function RoundIcon({
   icon: Icon,
-  iconColorClass = 'text-purple-600 dark:text-purple-100',
-  bgColorClass = 'bg-purple-100 dark:bg-purple-600',
+  iconColorClass = 'text-blue-600 dark:text-blue-100',
+  bgColorClass = 'bg-blue-100 dark:bg-blue-600',
   className,
 }) {
   const baseStyle = 'p-3 rounded-full'
