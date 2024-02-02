@@ -14,7 +14,7 @@ const ForgotPassword = lazy(() => import('./pages/ForgotPassword'))
 const ChangePassword = lazy(()=> import('./pages/ChangePassword'))
 const FailedVerification = lazy(()=> import('./pages/FailedVerification'))
 const PendingVerification = lazy(()=> import('./pages/PendingVerification'))
-const Payouts = lazy(()=> import('./pages/Payouts'))
+const Wallet = lazy(()=> import('./pages/Wallet'))
 const Kyc = lazy(()=> import('./pages/Kyc'))
 
 function App() {
@@ -54,7 +54,7 @@ function App() {
                 <Header />
                 <Main>
                   <Routes>
-                  <Route path="/" Component={Dashboard} />
+                  <Route path="/" Component={Wallet} />
                     {
                       routes.map( route => 
                         <Route path={`/app${route.path}`} Component={route.component} />

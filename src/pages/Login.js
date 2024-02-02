@@ -64,8 +64,8 @@ function Login() {
 
             if(res.firstTimePassword){
               navigate('/change_password');
-            }else if(res.isVerified){
-              navigate('/app/dashboard');
+            }else if(res.status == 0){
+              navigate('/app/wallet');
             }else if(res.status == 3){
               navigate('/kyc');
             }else if(res.status == 2){

@@ -11,6 +11,7 @@ import {
   OutlineLogoutIcon,
 } from '../icons'
 import { Avatar, Badge, Input, Dropdown, DropdownItem, WindmillContext } from '@windmill/react-ui'
+import { AuthContext } from '../context/AuthContext'
 
 function Header() {
   const { mode, toggleMode } = useContext(WindmillContext)
@@ -27,9 +28,15 @@ function Header() {
     setIsProfileMenuOpen(!isProfileMenuOpen)
   }
 
+  const { logout, email } = useContext(AuthContext);
+
+  function handleLogout(){
+    logout()
+  }
+
   return (
     <header className="z-40 py-4 bg-white shadow-bottom dark:bg-gray-800">
-      <div className="container flex items-center justify-between h-full px-6 mx-auto text-blue-600 dark:text-blue-300">
+      <div className="container flex items-center justify-between lg:justify-end h-full px-6 mx-auto text-blue-600 dark:text-blue-300">
         {/* <!-- Mobile hamburger --> */}
         <button
           className="p-1 mr-5 -ml-1 rounded-md lg:hidden focus:outline-none focus:shadow-outline-blue"
@@ -39,7 +46,7 @@ function Header() {
           <MenuIcon className="w-6 h-6" aria-hidden="true" />
         </button>
         {/* <!-- Search input --> */}
-        <div className="flex justify-center flex-1 lg:mr-32">
+        {/* <div className="flex justify-center flex-1 lg:mr-32">
           <div className="relative w-full max-w-xl mr-6 focus-within:text-blue-500">
             <div className="absolute inset-y-0 flex items-center pl-2">
               <SearchIcon className="w-4 h-4" aria-hidden="true" />
@@ -50,7 +57,7 @@ function Header() {
               aria-label="Search"
             />
           </div>
-        </div>
+        </div> */}
         <ul className="flex items-center flex-shrink-0 space-x-6">
           {/* <!-- Theme toggler --> */}
           <li className="flex">
@@ -67,16 +74,16 @@ function Header() {
             </button>
           </li>
           {/* <!-- Notifications menu --> */}
-          <li className="relative">
+          {/* <li className="relative">
             <button
               className="relative align-middle rounded-md focus:outline-none focus:shadow-outline-blue"
               onClick={handleNotificationsClick}
               aria-label="Notifications"
               aria-haspopup="true"
             >
-              <BellIcon className="w-5 h-5" aria-hidden="true" />
+              <BellIcon className="w-5 h-5" aria-hidden="true" /> */}
               {/* <!-- Notification badge --> */}
-              <span
+              {/* <span
                 aria-hidden="true"
                 className="absolute top-0 right-0 inline-block w-3 h-3 transform translate-x-1 -translate-y-1 bg-red-600 border-2 border-white rounded-full dark:border-gray-800"
               ></span>
@@ -99,7 +106,7 @@ function Header() {
                 <span>Alerts</span>
               </DropdownItem>
             </Dropdown>
-          </li>
+          </li> */}
           {/* <!-- Profile menu --> */}
           <li className="relative">
             <button
@@ -110,7 +117,7 @@ function Header() {
             >
               <Avatar
                 className="align-middle"
-                src="https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=aa3a807e1bbdfd4364d1f449eaa96d82"
+                src={require('../assets/img/profile.png')}
                 alt=""
                 aria-hidden="true"
               />
@@ -122,13 +129,13 @@ function Header() {
             >
               <DropdownItem tag="a" href="#">
                 <OutlinePersonIcon className="w-4 h-4 mr-3" aria-hidden="true" />
-                <span>Profile</span>
+                <span>{email}</span>
               </DropdownItem>
-              <DropdownItem tag="a" href="#">
+              {/* <DropdownItem tag="a" href="#">
                 <OutlineCogIcon className="w-4 h-4 mr-3" aria-hidden="true" />
                 <span>Settings</span>
-              </DropdownItem>
-              <DropdownItem onClick={() => alert('Log out!')}>
+              </DropdownItem> */}
+              <DropdownItem onClick={() => handleLogout()}>
                 <OutlineLogoutIcon className="w-4 h-4 mr-3" aria-hidden="true" />
                 <span>Log out</span>
               </DropdownItem>
