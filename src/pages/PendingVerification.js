@@ -22,12 +22,14 @@ function PendingVerification() {
               <p className="mb-4 text-sm font-semibold text-gray-700 dark:text-gray-200 text-center">Your application is pending approval.</p>
               
               <h1 className="mb-4 text-xs font-semibold text-gray-700 dark:text-gray-200 text-center mt-5">Check back later.</h1>
-              <Button class="bg-red-600 p-2 rounded-lg text-sm text-white w-full mt-4 text-center" block
-              onClick={() => handleLogout()}
-              >
-                Sign Out
-              </Button>
-
+              <div className='flex justify-center'>
+                <Button class="bg-red-600 p-2 rounded-lg text-sm text-white w-full lg:w-1/2  mt-4 text-center" block
+                onClick={() => handleLogout()}
+                >
+                  Sign Out
+                </Button>
+              </div>
+              
             </div>
           </main>
         </div>

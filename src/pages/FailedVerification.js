@@ -21,11 +21,13 @@ function FailedVerification() {
               <h1 className="mb-4 text-md font-semibold text-gray-700 dark:text-gray-200 text-center">Unfortunately your application was rejected. </h1>
               
               <h1 className="mb-4 text-xs font-semibold text-gray-700 dark:text-gray-200 text-center mt-5">Try again at a later date.</h1>
-              <Button class="bg-red-600 p-2 rounded-lg text-sm text-white w-full mt-4 text-center" block
-              onClick={() => handleLogout()}
-              >
-                Sign Out
-              </Button>
+              <div className='flex justify-center'>
+                <Button class="bg-red-600 p-2 rounded-lg text-sm text-white w-full lg:w-1/2  mt-4 text-center" block
+                onClick={() => handleLogout()}
+                >
+                  Sign Out
+                </Button>
+              </div>
 
             </div>
           </main>
