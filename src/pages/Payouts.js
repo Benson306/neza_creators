@@ -10,6 +10,7 @@ import {
   TableContainer,
   Pagination
 } from '@windmill/react-ui'
+import PageTitle from '../components/Typography/PageTitle'
 
 function Payouts() {
   const [data, setData] = useState([]);
@@ -60,11 +61,13 @@ function Payouts() {
 
   return (
     <div className='w-full mx-auto'>
+      <PageTitle>Recent Transactions</PageTitle>
+
       { !loading && data.length > 0 && <div className='capitalize flex my-3 mr-20 text-xs text-gray-600 dark:text-gray-400'>
-        Total Payout: <span className='font-semibold ml-2'>{data[0].currency}. {total}</span>
+        Total Earning: <span className='font-semibold ml-2'>{data[0].currency}. {total}</span>
       </div> }
       { !loading && data.length < 1 && <div className='capitalize flex my-3 mr-20 text-xs text-gray-600 dark:text-gray-400'>
-        You Have Received No Earnings
+        You Have Received No Earning
       </div> }
       <TableContainer className="mb-8">
         <Table>

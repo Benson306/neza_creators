@@ -15,7 +15,7 @@ function Wallet() {
     <div>
         <PageTitle>My Wallet</PageTitle>
         <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-3">
-        <InfoCard title="Total Payouts" value={`KES. 400000`}>
+        <InfoCard title="Total Earnings" value={`KES. 400000`}>
           <RoundIcon
             icon={PeopleIcon}
             iconColorClass="text-orange-500 dark:text-orange-100"
@@ -24,7 +24,7 @@ function Wallet() {
           />
         </InfoCard>
 
-        <InfoCard title="Total Withdrwawal" value={`KES. 300000`}>
+        <InfoCard title="Total Withdrawal" value={`KES. 300000`}>
           <RoundIcon
             icon={MoneyIcon}
             iconColorClass="text-green-500 dark:text-green-100"
