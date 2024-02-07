@@ -42,26 +42,26 @@ function App() {
           <Routes>
             <Route path="/change_password" Component={ChangePassword} />
             <Route path="/kyc" Component={Kyc} />
-          </Routes>
+            <Route path="/wallet" Component={Wallet} />
 
-          <div
-            className={`flex h-screen bg-gray-50 dark:bg-gray-900 ${isSidebarOpen && 'overflow-hidden'}`}
-          >
-              <Sidebar />
-              <div className="flex flex-col flex-1 w-full">
-                <Header />
-                <Main>
-                  <Routes>
-                  <Route path="/" Component={Wallet} />
-                    {
-                      routes.map( route => 
-                        <Route path={`/app${route.path}`} Component={route.component} />
-                      )
-                    }
-                  </Routes>
-                </Main>
-              </div>
-          </div>
+            {routes.map(route => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={(
+                  <div className={`flex h-screen bg-gray-50 dark:bg-gray-900 ${isSidebarOpen && 'overflow-hidden'}`}>
+                    <Sidebar />
+                    <div className="flex flex-col flex-1 w-full">
+                      <Header />
+                      <Main>
+                        <route.component />
+                      </Main>
+                    </div>
+                  </div>
+                )}
+              />
+            ))}
+          </Routes>
         </div> 
         
       }
