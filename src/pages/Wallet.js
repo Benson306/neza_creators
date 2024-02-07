@@ -7,9 +7,12 @@ import { Label, Input, Button } from '@windmill/react-ui'
 import { AuthContext } from '../context/AuthContext'
 import CTA from '../components/CTA'
 import Kyc from './Kyc'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Wallet() {
   const [amount, setAmount] = useState(0);
+  const [password, setPassword] = useState(null);
 
   const [status, setStatus] = useState(1);
   const { uid } = useContext(AuthContext);
@@ -29,9 +32,75 @@ function Wallet() {
 
   const handleWithdraw = () => {
 
+    if(amount < 50){
+      toast.error('Invalid Amount', {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+      return;
+    }
+
+    if(password == null){
+      toast.error('Invalid Amount', {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+      return;
+    }
+
+    fetch(`${process.env.REACT_APP_API_URL}/withdraw`,{
+      method:"POST",
+      headers: {
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify({
+        creator_id : uid,
+        password,
+        amount
+      })
+    })
+    .then((response)=> {
+      if(response.ok){
+        toast.success('Withdrawal succesful', {
+          position: "top-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+      }else{
+        toast.error('Withdrawal Failed', {
+          position: "top-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+      }
+    })
+
   }
   return (
     <div>
+      <ToastContainer />
         <PageTitle>My Wallet</PageTitle>
         { status == 0 && <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-3">
         <InfoCard title="Total Earnings" value={`KES. 400000`}>
@@ -81,9 +150,14 @@ function Wallet() {
             <div className="w-full">
             <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200 text-center">Withdraw Cash</h1>
               
-              <Label>
+              <Label className="mb-5">
                 <span className='font-semibold'>Enter Amount</span>
                 <Input onChange={e =>  setAmount(e.target.value)} className="mt-1" type="number" placeholder="2300" />
+              </Label>
+
+              <Label>
+                <span className='font-semibold'>Enter Password</span>
+                <Input onChange={e =>  setPassword(e.target.value)} className="mt-1" type="password" placeholder="*******" />
               </Label>
               
               <div className='flex justify-center'>
