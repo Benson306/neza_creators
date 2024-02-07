@@ -42,8 +42,6 @@ function App() {
           <Routes>
             <Route path="/change_password" Component={ChangePassword} />
             <Route path="/kyc" Component={Kyc} />
-            <Route path="/pending_verification" Component={PendingVerification} />
-            <Route path="/failed_verification" Component={FailedVerification} />
           </Routes>
 
           <div

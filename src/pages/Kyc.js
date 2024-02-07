@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import ImageLight from '../assets/img/login-office.jpeg'
 import ImageDark from '../assets/img/login-office-dark.jpeg'
@@ -14,7 +14,9 @@ function Kyc() {
   const [selectedKra, setSelectedKra] = useState(null);
   const [idNumber, setIDNumber] = useState(null);
   const [kraNumber, setKraNumber] = useState(null);
+  const [phoneNumber, setPhoneNumber] = useState(null);
   const { uid } = useContext(AuthContext);
+  const location = useLocation();
 
   const navigate = useNavigate();
 
@@ -86,11 +88,27 @@ const handleKraDelete = () => {
           return;
       }
 
+      const phone_regex = /^\+[0-9]{12}$/;
+      if(!phone_regex.test(phoneNumber)){
+        toast.error('Enter a valid phone number', {
+          position: "top-right",
+          autoClose: 500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+          return;
+      }
+
       const formData = new FormData();
       formData.append('id_file', selectedID);
       formData.append('kra_file', selectedKra);
       formData.append('id_number', idNumber);
       formData.append('kra_number', kraNumber);
+      formData.append('phone_number', phoneNumber);
 
       fetch(`${process.env.REACT_APP_API_URL}/upload_kyc/${uid}`,{
         method: 'POST',
@@ -98,7 +116,11 @@ const handleKraDelete = () => {
       })
       .then(response => {
         if(response.ok){
-            navigate("/pending_verification");
+          if (location.pathname === '/app/wallet') {
+            window.location.reload();
+          }else{
+            navigate("/app/wallet");
+          }
         }else{
           toast.error('Server Error', {
             position: "top-right",
@@ -133,7 +155,11 @@ const handleKraDelete = () => {
           <main className="flex items-center justify-center p-6 sm:p-12 md:w-3/4 mx-auto">
             <div className="w-full">
               <h1 className="mb-4 text-md font-semibold text-gray-700 dark:text-gray-200">Submit the following documents to be able to proceed.</h1>
-              
+              <Label>
+                <span>Phone Number (e.g +254712345678 - start with country code) </span>
+                <Input onChange={e => setPhoneNumber(e.target.value)} className="mt-1 mb-4" type="text" placeholder="+254712345678" />
+              </Label>
+
               <Label>
                 <span>National ID Number</span>
                 <Input onChange={e => setIDNumber(e.target.value)} className="mt-1 mb-4" type="number" placeholder="12345678" />
