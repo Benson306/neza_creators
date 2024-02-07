@@ -9,6 +9,8 @@ import CTA from '../components/CTA'
 import Kyc from './Kyc'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from '@windmill/react-ui';
+import { Checkmark } from 'react-checkmark'
 
 function Wallet() {
   const [amount, setAmount] = useState(0);
@@ -16,7 +18,8 @@ function Wallet() {
 
   const [status, setStatus] = useState(1);
   const { uid } = useContext(AuthContext);
-  console.log(uid)
+
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(()=>{
     fetch(`${process.env.REACT_APP_API_URL}/get_verification/${uid}`)
@@ -45,7 +48,7 @@ function Wallet() {
         });
       return;
     }
-
+    
     if(password == null){
       toast.error('Invalid Amount', {
         position: "top-right",
@@ -73,37 +76,104 @@ function Wallet() {
     })
     .then((response)=> {
       if(response.ok){
-        toast.success('Withdrawal succesful', {
-          position: "top-right",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          });
+        openModal();
+        setAmount(0)
+        setPassword(null);
       }else{
-        toast.error('Withdrawal Failed', {
-          position: "top-right",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          });
+        response.json().then((res)=>{
+          console.log(res)
+          if(res == "failed"){
+            toast.error('Server Error', {
+              position: "top-right",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+              });
+          }else if(res == "invalid amount"){
+            toast.error('Insufficient Balance', {
+              position: "top-right",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+              });
+          }else{
+            toast.error('Authentication Failed', {
+              position: "top-right",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+              });
+          }
+        })
       }
     })
 
   }
+
+  function openModal() {
+    setIsModalOpen(true)
+  }
+
+  function closeModal() {
+    setIsModalOpen(false)
+  }
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [total, setTotal] = useState(0);
+  const [data, setData] = useState([]);
+
+  useEffect(()=>{
+    fetch(`${process.env.REACT_APP_API_URL}/creator_payouts/${uid}`)
+    .then( response => response.json())
+    .then(response => {
+      setData(response);
+      setLoading(false);
+    })
+    .catch(err => {
+      setError(true);
+      setLoading(false);
+    })
+  },[])
+
+  const [balance, setBalance] = useState(0);
+  const [withdrawals, setWithdrawals]  = useState(0);
+
+  useEffect(()=>{
+    fetch(`${process.env.REACT_APP_API_URL}/get_creator/${uid}`)
+    .then( response => response.json())
+    .then(response => {
+      setWithdrawals(response.totalWithdrawal);
+      setBalance(response.balance);
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  })
+
+  useEffect(()=>{
+    const calculatedTotal = data.reduce((acc, item) => acc + Number(item.amount), 0);
+    setTotal(calculatedTotal)
+  },[data])
+
   return (
     <div>
       <ToastContainer />
         <PageTitle>My Wallet</PageTitle>
         { status == 0 && <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-3">
-        <InfoCard title="Total Earnings" value={`KES. 400000`}>
+        <InfoCard title="Total Earnings" value={`KES. ${total}`}>
           <RoundIcon
             icon={PeopleIcon}
             iconColorClass="text-orange-500 dark:text-orange-100"
@@ -112,7 +182,7 @@ function Wallet() {
           />
         </InfoCard>
 
-        <InfoCard title="Total Withdrawal" value={`KES. 300000`}>
+        <InfoCard title="Total Withdrawal" value={`KES. ${withdrawals}`}>
           <RoundIcon
             icon={MoneyIcon}
             iconColorClass="text-green-500 dark:text-green-100"
@@ -121,7 +191,7 @@ function Wallet() {
           />
         </InfoCard>
 
-        <InfoCard title="Wallet Balance" value={`KES. 100000`}>
+        <InfoCard title="Wallet Balance" value={`KES. ${balance}`}>
           <RoundIcon
             icon={CartIcon}
             iconColorClass="text-blue-600 dark:text-blue-100"
@@ -189,6 +259,16 @@ function Wallet() {
         color={"text-white"}/>
       </div> 
       }
+
+    <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <ModalBody>
+          <div className="flex justify-center my-1">
+              <Checkmark size='xxLarge' />
+          </div>
+          <div className='text-center mt-5 text-lg'>Withdrawal has been succesful</div>
+        </ModalBody>
+      </Modal>
+
     </div>
   )
 }
