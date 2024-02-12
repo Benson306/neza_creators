@@ -203,7 +203,7 @@ function Wallet() {
 
         {
           status == 2 && <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-3">
-            <InfoCard title="Total Earnings" value={`KES. 400000`}>
+            <InfoCard title="Total Earnings" value={`KES. ${total}`}>
               <RoundIcon
                 icon={PeopleIcon}
                 iconColorClass="text-orange-500 dark:text-orange-100"
