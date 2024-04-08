@@ -14,7 +14,12 @@ const routes = [
   {
     path: '/app/payouts',
     icon: 'FormsIcon',
-    name: 'My Earnings',
+    name: 'Earnings',
+  },
+  {
+    path: '/app/withdrawals',
+    icon: 'FormsIcon',
+    name: 'Withdrawals',
   },
   // {
   //   path: '/app/cards',

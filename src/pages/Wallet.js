@@ -33,9 +33,73 @@ function Wallet() {
     })
   },[])
 
+  function openModal() {
+    setIsModalOpen(true)
+  }
+
+  function closeModal() {
+    setIsModalOpen(false)
+  }
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [total, setTotal] = useState(0);
+  const [data, setData] = useState([]);
+
+  useEffect(()=>{
+    fetch(`${process.env.REACT_APP_API_URL}/creator_payouts/${uid}`)
+    .then( response => response.json())
+    .then(response => {
+      setData(response);
+      setLoading(false);
+    })
+    .catch(err => {
+      setError(true);
+      setLoading(false);
+    })
+  },[])
+
+  const [balance, setBalance] = useState(0);
+  const [withdrawals, setWithdrawals]  = useState(0);
+  const [name, setName] = useState(null);
+
+  useEffect(()=>{
+    fetch(`${process.env.REACT_APP_API_URL}/get_creator/${uid}`)
+    .then( response => response.json())
+    .then(response => {
+      setWithdrawals(response.totalWithdrawal);
+      setBalance(response.balance);
+      setName(response.name);
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  },[]);
+
+  const [ phoneNumber, setPhoneNumber ] = useState(null);
+
+  useEffect(()=>{
+    fetch(`${process.env.REACT_APP_API_URL}/get_creator_phone_number/${uid}`)
+    .then(response => {
+      return response.json();
+    })
+    .then(( response )=>{
+      console.log(response)
+      setPhoneNumber(response);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  },[])
+
+  useEffect(()=>{
+    const calculatedTotal = data.reduce((acc, item) => acc + Number(item.amount), 0);
+    setTotal(calculatedTotal)
+  },[data])
+
   const handleWithdraw = () => {
 
-    if(amount < 50){
+    if(amount < 1){
       toast.error('Invalid Amount', {
         position: "top-right",
         autoClose: 1000,
@@ -63,7 +127,7 @@ function Wallet() {
       return;
     }
 
-    fetch(`${process.env.REACT_APP_API_URL}/withdraw`,{
+    fetch(`${process.env.REACT_APP_API_URL}/make_withdrawal`,{
       method:"POST",
       headers: {
         "Content-Type":"application/json"
@@ -104,6 +168,17 @@ function Wallet() {
               progress: undefined,
               theme: "colored",
               });
+          }else if(res == "failed: payment"){
+            toast.error('Server Error. Try Later', {
+              position: "top-right",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+              });
           }else{
             toast.error('Authentication Failed', {
               position: "top-right",
@@ -121,52 +196,6 @@ function Wallet() {
     })
 
   }
-
-  function openModal() {
-    setIsModalOpen(true)
-  }
-
-  function closeModal() {
-    setIsModalOpen(false)
-  }
-
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const [total, setTotal] = useState(0);
-  const [data, setData] = useState([]);
-
-  useEffect(()=>{
-    fetch(`${process.env.REACT_APP_API_URL}/creator_payouts/${uid}`)
-    .then( response => response.json())
-    .then(response => {
-      setData(response);
-      setLoading(false);
-    })
-    .catch(err => {
-      setError(true);
-      setLoading(false);
-    })
-  },[])
-
-  const [balance, setBalance] = useState(0);
-  const [withdrawals, setWithdrawals]  = useState(0);
-
-  useEffect(()=>{
-    fetch(`${process.env.REACT_APP_API_URL}/get_creator/${uid}`)
-    .then( response => response.json())
-    .then(response => {
-      setWithdrawals(response.totalWithdrawal);
-      setBalance(response.balance);
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  })
-
-  useEffect(()=>{
-    const calculatedTotal = data.reduce((acc, item) => acc + Number(item.amount), 0);
-    setTotal(calculatedTotal)
-  },[data])
 
   return (
     <div>
@@ -218,11 +247,20 @@ function Wallet() {
         <div className="flex flex-col overflow-y-auto md:flex-row">
           <main className="flex items-center justify-center p-6 sm:p-12 md:w-3/4 mx-auto">
             <div className="w-full">
-            <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200 text-center">Withdraw Cash</h1>
-              
-              <Label className="mb-5">
+            <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200 text-center">Withdraw To MPESA</h1>
+              <Label className="mb-3">
+                <span className='font-semibold'>Full name</span>
+                <Input disabled className="mt-1" type="text" value={name} />
+              </Label>
+
+              <Label className="mb-3">
+                <span className='font-semibold'>Phone Number</span>
+                <Input disabled className="mt-1" type="text" value={phoneNumber} />
+              </Label>
+
+              <Label className="mb-3">
                 <span className='font-semibold'>Enter Amount</span>
-                <Input onChange={e =>  setAmount(e.target.value)} className="mt-1" type="number" placeholder="2300" />
+                <Input onChange={e =>  setAmount(e.target.value)} className="mt-1" type="number" placeholder="200" />
               </Label>
 
               <Label>
@@ -265,7 +303,8 @@ function Wallet() {
           <div className="flex justify-center my-1">
               <Checkmark size='xxLarge' />
           </div>
-          <div className='text-center mt-5 text-lg'>Withdrawal has been succesful</div>
+          <div className='text-center mt-5 text-lg'>Withdrawal transaction has been queued succesfully.</div>
+          <div className='text-center mt-2 text-sm'>Check the status of the transaction on the withdrawals tab.</div>
         </ModalBody>
       </Modal>
 
