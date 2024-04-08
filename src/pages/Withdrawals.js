@@ -24,7 +24,7 @@ function Withdrawals() {
         fetch(`${process.env.REACT_APP_API_URL}/withdrawals/${uid}`)
         .then( response => response.json())
         .then(response => {
-          setData(response);
+          setData(response.reverse());
           setLoading(false);
         })
         .catch(err => {
@@ -89,7 +89,7 @@ function Withdrawals() {
           </TableHeader>
           <TableBody>
             {
-              !loading && !error && dataTable1.slice().reverse().map( (item, i) => (
+              !loading && !error && dataTable1.map( (item, i) => (
               <TableRow key={i}>
                 <TableCell>
                     <p className="font-semibold">{phoneNumber}</p>
