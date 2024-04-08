@@ -145,7 +145,6 @@ function Wallet() {
         setPassword(null);
       }else{
         response.json().then((res)=>{
-          console.log(res)
           if(res == "failed"){
             toast.error('Server Error', {
               position: "top-right",

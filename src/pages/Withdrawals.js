@@ -24,7 +24,6 @@ function Withdrawals() {
         fetch(`${process.env.REACT_APP_API_URL}/withdrawals/${uid}`)
         .then( response => response.json())
         .then(response => {
-            console.log(response)
           setData(response);
           setLoading(false);
         })

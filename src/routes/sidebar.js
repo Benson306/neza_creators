@@ -18,7 +18,7 @@ const routes = [
   },
   {
     path: '/app/withdrawals',
-    icon: 'FormsIcon',
+    icon: 'MoneyIcon',
     name: 'Withdrawals',
   },
   // {
