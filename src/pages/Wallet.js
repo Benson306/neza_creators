@@ -11,6 +11,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from '@windmill/react-ui';
 import { Checkmark } from 'react-checkmark'
+import { useNavigate } from 'react-router-dom'
 
 function Wallet() {
   const [amount, setAmount] = useState(0);
@@ -195,6 +196,10 @@ function Wallet() {
     })
 
   }
+  const navigate = useNavigate();
+  const handleNavigate = () =>{
+    navigate("/app/withdrawals")
+  }
 
   return (
     <div>
@@ -304,6 +309,14 @@ function Wallet() {
           </div>
           <div className='text-center mt-5 text-lg'>Withdrawal transaction has been queued succesfully.</div>
           <div className='text-center mt-2 text-sm'>Check the status of the transaction on the withdrawals tab.</div>
+
+          <div className='flex justify-center mt-4'>
+                <Button class="bg-blue-600 p-1 rounded-lg text-sm text-white w-full lg:w-1/2  mt-4 text-center" block
+                onClick={() => handleNavigate()}
+                >
+                  View Transaction Status
+                </Button>
+              </div>
         </ModalBody>
       </Modal>
 
