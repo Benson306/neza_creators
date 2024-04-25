@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import ImageLight from '../assets/img/login-office.jpeg'
 import ImageDark from '../assets/img/login-office-dark.jpeg'
 import { GithubIcon, TwitterIcon } from '../icons'
-import { Label, Input, Button } from '@windmill/react-ui'
+import { Label, Input, Button, WindmillContext } from '@windmill/react-ui'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthContext } from '../context/AuthContext'
@@ -100,11 +100,19 @@ function Login() {
         });
     })
   }
-  
+  const { mode } = useContext(WindmillContext)
   return (
     <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
       <ToastContainer />
-      <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
+      <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden">
+        <div className='flex justify-center mb-4'>
+            { mode === 'dark' ? (
+              <img src={require("../assets/img/LogoWhite.png")} width={100} />
+            ) : (
+              <img src={require("../assets/img/LogoBlack.png")} width={100} />
+            )}
+        </div>
+        <div className='bg-white rounded-lg shadow-xl dark:bg-gray-800'>
         <div className="flex flex-col overflow-y-auto md:flex-row">
           <div className="h-32 md:h-auto md:w-1/2">
             <img
@@ -133,7 +141,7 @@ function Login() {
                 <Input onChange={e =>  setPassword(e.target.value)} className="mt-1" type="password" placeholder="***************" />
               </Label>
 
-              <Button class="bg-blue-600 p-2 rounded-lg text-sm text-white w-full mt-4 text-center" block
+              <Button class="bg-green-500 p-2 rounded-lg text-sm text-white w-full mt-4 text-center" block
               onClick={() => handleSubmit()}
               >
                 Log in
@@ -143,7 +151,7 @@ function Login() {
 
               <p >
                 <Link
-                  className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
+                  className="text-sm font-medium text-green-600 dark:text-green-400 hover:underline"
                   to="/forgot-password"
                 >
                   Forgot your password?
@@ -152,6 +160,7 @@ function Login() {
             </div>
           </main>
         </div>
+      </div>
       </div>
     </div>
   )

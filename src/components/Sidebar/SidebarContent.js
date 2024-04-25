@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import routes from '../../routes/sidebar'
 import { NavLink, Route, Routes } from 'react-router-dom'
 import * as Icons from '../../icons'
 import SidebarSubmenu from './SidebarSubmenu'
-import { Button } from '@windmill/react-ui'
+import { Button, WindmillContext } from '@windmill/react-ui'
 
 function Icon({ icon, ...props }) {
   const Icon = Icons[icon]
@@ -11,10 +11,20 @@ function Icon({ icon, ...props }) {
 }
 
 function SidebarContent() {
+  const { mode } = useContext(WindmillContext)
   return (
     <div className="py-4 text-gray-500 dark:text-gray-400">
       <div className="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200" href="#">
-        Creators Dashboard
+        <div className='mr-5 mt-5'>
+          <div className='flex justify-center'>
+              { mode === 'dark' ? (
+                <img src={require("./../../assets/img/LogoWhite.png")} width={100} />
+              ) : (
+                <img src={require("./../../assets/img/LogoBlack.png")} width={100} />
+              )}
+          </div>
+          <div className='mt-5 text-center'>Creators Dashboard</div>
+        </div>
       </div>
       <ul className="mt-6">
         {routes.map((route) =>
