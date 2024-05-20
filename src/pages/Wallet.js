@@ -273,7 +273,7 @@ function Wallet() {
               </Label>
               
               <div className='flex justify-center'>
-                <Button class="bg-blue-600 p-2 rounded-lg text-sm text-white w-full lg:w-1/2  mt-4 text-center" block
+                <Button class="bg-green-600 p-2 rounded-lg text-sm text-white w-full lg:w-1/2  mt-4 text-center" block
                 onClick={() => handleWithdraw()}
                 >
                   Withdraw Cash

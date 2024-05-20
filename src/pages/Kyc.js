@@ -7,6 +7,7 @@ import { Label, Input, Button } from '@windmill/react-ui'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthContext } from '../context/AuthContext';
+import Header from '../components/Header'
 
 function Kyc() {
 
@@ -148,6 +149,8 @@ const handleKraDelete = () => {
       })
   }
   return (
+    <div>
+      <Header />
     <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
       <ToastContainer />
       <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
@@ -228,7 +231,7 @@ const handleKraDelete = () => {
                 )}
               </div>
 
-              <Button class="bg-blue-600 p-2 rounded-lg text-sm text-white w-full mt-4 text-center" block
+              <Button class="bg-green-600 p-2 rounded-lg text-sm text-white w-full mt-4 text-center" block
               onClick={() => handleSubmit()}
               >
                 Submit Documents
@@ -238,6 +241,7 @@ const handleKraDelete = () => {
           </main>
         </div>
       </div>
+    </div>
     </div>
   )
 }
