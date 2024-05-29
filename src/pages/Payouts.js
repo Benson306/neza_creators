@@ -24,6 +24,7 @@ function Payouts() {
     fetch(`${process.env.REACT_APP_API_URL}/creator_payouts/${uid}`)
     .then( response => response.json())
     .then(response => {
+      console.log(response);
       setData(response);
       setLoading(false);
     })
