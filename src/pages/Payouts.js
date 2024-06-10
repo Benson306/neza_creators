@@ -8,7 +8,8 @@ import {
   TableRow,
   TableFooter,
   TableContainer,
-  Pagination
+  Pagination,
+  Badge
 } from '@windmill/react-ui'
 import PageTitle from '../components/Typography/PageTitle'
 
@@ -79,6 +80,7 @@ function Payouts() {
               <TableCell >Country</TableCell>
               <TableCell >Amount</TableCell>
               <TableCell >Date</TableCell>
+              <TableCell>Status</TableCell>
             </tr>
           </TableHeader>
           <TableBody>
@@ -100,6 +102,17 @@ function Payouts() {
                 </TableCell>
                 <TableCell>
                   <span className="text-sm capitalize">{item.date}</span>
+                </TableCell>
+                <TableCell>
+                    {
+                      item.status == 0 ?
+                          <Badge type={'neutral'}>Pending Approval</Badge>
+                          :
+                      item.status == 1 ?
+                          <Badge type={'success'}>Paid</Badge>
+                          :
+                          <Badge type={'danger'}>Rejected</Badge>
+                    }
                 </TableCell>
               </TableRow>
               ) )
