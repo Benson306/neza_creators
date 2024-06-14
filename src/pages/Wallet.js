@@ -45,6 +45,8 @@ function Wallet() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [total, setTotal] = useState(0);
+  const [totalPending, setTotalPending] = useState(0);
+  const [totalApproved, setTotalApproved] = useState(0);
   const [data, setData] = useState([]);
 
   useEffect(()=>{
@@ -85,7 +87,6 @@ function Wallet() {
       return response.json();
     })
     .then(( response )=>{
-      console.log(response)
       setPhoneNumber(response);
     })
     .catch(err => {
@@ -96,6 +97,16 @@ function Wallet() {
   useEffect(()=>{
     const calculatedTotal = data.reduce((acc, item) => acc + Number(item.amount), 0);
     setTotal(calculatedTotal)
+  },[data])
+
+  useEffect(()=>{
+    const calculatedTotal = data.filter( item => item.status == 1).reduce((acc, item) => acc + Number(item.amount), 0);
+    setTotalApproved(calculatedTotal)
+  },[data])
+
+  useEffect(()=>{
+    const calculatedTotal = data.filter( item => item.status == 0).reduce((acc, item) => acc + Number(item.amount), 0);
+    setTotalPending(calculatedTotal)
   },[data])
 
   const handleWithdraw = () => {
@@ -236,11 +247,29 @@ function Wallet() {
 
         {
           status == 2 && <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-3">
-            <InfoCard title="Total Earnings" value={`KES. ${total}`}>
+            <InfoCard title="Total earnings" value={`KES. ${total}`}>
               <RoundIcon
                 icon={PeopleIcon}
                 iconColorClass="text-orange-500 dark:text-orange-100"
                 bgColorClass="bg-orange-100 dark:bg-orange-500"
+                className="mr-4"
+              />
+            </InfoCard>
+
+            <InfoCard title="Total approved earnings" value={`KES. ${totalApproved}`}>
+              <RoundIcon
+                icon={MoneyIcon}
+                iconColorClass="text-green-500 dark:text-green-100"
+                bgColorClass="bg-green-100 dark:bg-green-500"
+                className="mr-4"
+              />
+            </InfoCard>
+
+            <InfoCard title="Total earnings pending approval" value={`KES. ${totalPending}`}>
+              <RoundIcon
+                icon={CartIcon}
+                iconColorClass="text-blue-600 dark:text-blue-100"
+                bgColorClass="bg-blue-100 dark:bg-blue-600"
                 className="mr-4"
               />
             </InfoCard>
