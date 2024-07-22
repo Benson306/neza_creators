@@ -47,6 +47,22 @@ function SidebarContent() {
           </li>
           )
         )}
+
+            <li className="px-6 py-3 fixed inset-x-0 bottom-0">
+              <NavLink
+                to={"https://neza.money/#faq"}
+                target='_blank'
+                className={({isActive, isPending})=>
+                isActive ? "inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 text-gray-800 dark:text-gray-100" : "inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+              }
+              >
+                <Routes>
+                <Route path={"/"} exact={"/"} />
+                </Routes>
+                <Icon className="w-5 h-5 dark:fill-current text-black dark:text-white" aria-hidden="true" icon={"HelpIcon"} />
+                <span className="ml-4">Help</span>
+              </NavLink>
+            </li>
       </ul>
       {/* <div className="px-6 my-6">
         <Button class="bg-blue-600 p-2 rounded-lg text-sm text-white">

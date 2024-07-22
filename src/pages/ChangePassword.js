@@ -69,14 +69,15 @@ function ChangePassword() {
           });
 
           response.json().then((res)=>{
-            if(res.isVerified){
-              navigate('/app/dashboard');
+            console.log(res)
+            if(res.isVerified == 0){
+              navigate('/app/wallet');
             }else if(res.status == 3){
               navigate('/kyc');
             }else if(res.status == 2){
-              navigate('/pending_verification');
+              navigate('/app/wallet');
             }else if(res.status == 1){
-              navigate('/failed_verification');
+              navigate('/app/wallet');
             }
           });
 

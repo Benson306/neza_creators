@@ -21,6 +21,11 @@ const routes = [
     icon: 'MoneyIcon',
     name: 'Withdrawals',
   },
+  {
+    path: '/app/settings',
+    icon: 'SettingsIcon',
+    name: 'Account Settings'
+  },
   // {
   //   path: '/app/cards',
   //   icon: 'CardsIcon',

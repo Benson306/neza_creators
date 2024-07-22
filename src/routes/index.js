@@ -4,6 +4,7 @@ import { lazy } from 'react'
 const Wallet = lazy(() => import('../pages/Wallet'))
 const Payouts = lazy(() => import('../pages/Payouts'))
 const Withdrawals = lazy(() => import('../pages/Withdrawals'))
+const Settings = lazy(() => import('../pages/Settings'))
 const Forms = lazy(() => import('../pages/Forms'))
 const Cards = lazy(() => import('../pages/Cards'))
 const Charts = lazy(() => import('../pages/Charts'))
@@ -39,6 +40,10 @@ const routes = [
   {
     path: '/app/withdrawals',
     component: Withdrawals,
+  },
+  {
+    path: '/app/settings',
+    component: Settings
   },
   {
     path: '/app/cards',
